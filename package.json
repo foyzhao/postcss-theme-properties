@@ -1,0 +1,20 @@
+{
+  "name": "postcss-theme-properties",
+  "version": "0.0.1",
+  "description": "A postcss plugin for theme",
+  "author": "Foy",
+  "license": "MIT",
+  "homepage": "https://github.com/foyzhao/postcss-theme-properties",
+  "keywords": [
+    "postcss",
+    "theme",
+    "skin"
+  ],
+  "files": [
+    "index.js"
+  ],
+  "main": "index.js",
+  "devDependencies": {
+    "postcss": "^7.0.5"
+  }
+}
