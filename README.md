@@ -72,6 +72,10 @@ button {
   padding: 1rem 2rem;
   color: #fff;
 }
+button {
+  background: #000;
+  border: 1px solid #ddd
+}
 .theme-blue button {
   background: #00f;
   border: 1px solid #bbf;
@@ -79,6 +83,9 @@ button {
 .theme-red button {
   background: #f00;
   border: 1px solid #fbb;
+}
+a {
+  color: #000;
 }
 .theme-blue a {
   color: #00f;
