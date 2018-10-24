@@ -23,7 +23,7 @@ module.exports = postcss.plugin('postcss-theme-properties', opts => {
               const themeRule = rule.clone({
                 selector: `.theme-${theme} ` + rule.selector
               });
-              themeRule.replaceValues(/var\(--(.*)\)/, `var(--theme-${theme}-$1)`);
+              themeRule.replaceValues(/var\(--([^)]*)\)/g, `var(--theme-${theme}-$1)`);
               root.insertBefore(atRule, themeRule)
             })
 
