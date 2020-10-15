@@ -13,11 +13,9 @@ module: {
             options: {
               ident: 'postcss',
               plugins: [
-                require('postcss-nested')({
-                  bubble: ['theme']
-                }),
+                require('postcss-nested')(),
                 require('postcss-theme-properties')({
-                  themes: ['blue', 'red']
+                  themes: ['foo', 'bar']
                 }),
                 require('postcss-custom-properties')({
                   importFrom: './src/config.css',
@@ -28,7 +26,7 @@ module: {
           }
         ]
       },
-      ...
+      // ...
     ]
   }
 ```
@@ -36,61 +34,52 @@ module: {
 src/config.css
 ```pcss
 :root {
-  --main-color: #000;
-  --border-color: #ddd;
-}
-:root {
-  --theme-blue-main-color: #00f;
-  --theme-blue-border-color: #bbf;
-}
-:root {
-  --theme-red-main-color: #f00;
-  --theme-red-border-color: #fbb;
+  --theme-primary-color: black;
+  --theme-divider-color: gray;
+  --foo-primary-color: blue;
+  --foo-divider-color: lightblue;
+  --bar-primary-color: green;
+  --bar-divider-color: lightgreen;
 }
 ```
 
 src/app.css
-```pcss
+```css
 button {
   padding: 1rem 2rem;
+  background: var(--theme-primary-color);
+  border: 1px solid var(--theme-divider-color);
   color: #fff;
-  @theme {
-    background: var(--main-color);
-    border: 1px solid var(--border-color);
-  }
 }
-@theme {
-  a {
-    color: var(--main-color);
-  }
+
+a {
+  color: var(--theme-primary-color);
 }
 ```
 
 dist/output.css
-```pcss
+```css
 button {
   padding: 1rem 2rem;
+  background: black;
+  border: 1px solid gray;
   color: #fff;
 }
-button {
-  background: #000;
-  border: 1px solid #ddd
+.foo button {
+  background: blue;
+  border: 1px solid lightblue;
 }
-.theme-blue button {
-  background: #00f;
-  border: 1px solid #bbf;
-}
-.theme-red button {
-  background: #f00;
-  border: 1px solid #fbb;
+.bar button {
+  background: green;
+  border: 1px solid lightgreen;
 }
 a {
-  color: #000;
+  color: black;
 }
-.theme-blue a {
-  color: #00f;
+.foo a {
+  color: blue;
 }
-.theme-red a {
-  color: #f00;
+.bar a {
+  color: green;
 }
 ```

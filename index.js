@@ -1,39 +1,29 @@
-const postcss = require('postcss');
+const postcss = require('postcss')
 
 module.exports = postcss.plugin('postcss-theme-properties', opts => {
-
-  opts = Object.assign({
-    themes: [],
-    preserve: true
-  }, opts);
-
   return root => {
     if (opts.themes && opts.themes.length) {
-      root.walkAtRules(atRule => {
-        if (atRule.name === 'theme') {
-          atRule.walkRules(rule => {
-
-            // preserve default rule
-            if (opts.preserve) {
-              root.insertBefore(atRule, rule.clone())
-            }
-
-            // insert theme rule
-            opts.themes.forEach(theme => {
-              const themeRule = rule.clone({
-                selector: `.theme-${theme} ` + rule.selector
-              });
-              themeRule.replaceValues(/var\(--([^)]*)\)/g, `var(--theme-${theme}-$1)`);
-              root.insertBefore(atRule, themeRule)
+      root.walkRules(rule => {
+        const themeRules = {}
+        rule.walkDecls(decl => {
+          if (decl.value.includes('--theme-')) {
+            opts.themes.reverse().forEach(theme => {
+              if (!themeRules[theme]) {
+                themeRules[theme] = postcss.rule({
+                  selector: `.${theme} ` + rule.selector
+                })
+              }
+              themeRules[theme].append(postcss.decl({
+                prop: decl.prop,
+                value: decl.value.replace(/var\(--theme-([^)]*)\)/g, `var(--${theme}-$1)`)
+              }))
             })
-
-          });
-
-          // remove @theme rule
-          atRule.remove()
-        }
+          }
+          for (theme in themeRules) {
+            root.insertAfter(rule, themeRules[theme])
+          }
+        })
       })
     }
   }
-
-});
+})
